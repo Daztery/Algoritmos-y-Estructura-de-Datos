@@ -1,0 +1,22 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+
+string invertir(string cadena)
+{
+   return string(cadena.rbegin(), cadena.rend());
+}
+
+int main()
+{
+
+string oracion;
+cout<<"Escribe una oracion y te la pondremos al reves: \n";
+getline(cin,oracion);
+
+cout<<invertir(oracion);
+
+
+}
