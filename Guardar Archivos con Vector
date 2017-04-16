@@ -1,0 +1,69 @@
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+class Contacto{
+private:
+  string nombres;
+  string apellidos;
+  string email;
+  string numero;
+public:
+    Contacto(string nombres,string apellidos, string email, string numero):nombres(nombres), apellidos(apellidos),email(email),numero(numero){}
+    string Convertir(){
+        stringstream ss;
+        ss<<nombres<<", "<<apellidos<<", "<<email<<", "<<numero<<endl;
+        return ss.str();
+    }
+
+};
+
+class GestorContacto{
+    private:
+    vector <Contacto*> c;
+    public:
+    ~GestorContacto(){
+    for(int i=0;i<c.size();i++)
+        delete c[i];
+    }
+    void Agregar(string nom="", string ape="", string ema="", string num=""){
+        c.push_back(new Contacto(nom,ape,ema,num));
+    }
+    void GuardarArchivo(){
+        ofstream Datos("asd.txt");
+        for(int i=0;i<c.size();i++){
+            Datos<<c[i]->Convertir();
+        }
+    }
+
+
+};
+
+
+
+
+int main()
+{
+    GestorContacto *o = new GestorContacto();
+    string nom,ape,ema,num;
+     do {
+        cout << "Ingrese el nombre (0 para terminar): ";
+        cin >> nom;
+        if(nom=="0")break;
+        cout << "Ingrese el apellido: ";
+        cin >> ape;
+        cout << "Ingrese el email: ";
+        cin >> ema;
+        cout << "Ingrese el número de celular: ";
+        cin >> num;
+        o->Agregar(nom, ape, ema, num);
+    } while (nom != "");
+    cout << "Gracias por usar Skynet\n";
+    o->GuardarArchivo();
+
+    delete o;
+    o=NULL;
+    return 0;
+}
