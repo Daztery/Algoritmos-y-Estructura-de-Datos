@@ -1,0 +1,82 @@
+#include <iostream>
+#include  <fstream>
+#include  <sstream>
+#include   <vector>
+#include <stdlib.h>
+
+using namespace std;
+
+class Alumno {
+    string codigo;
+    string nombres;
+    string apellidos;
+    float pc1, tp1, ea, pc2, tf, pa, eb;
+
+public:
+    Alumno(string codigo = "",
+            string nombres = "",
+            string apellidos = "",
+            float pc1 = 0, float tp1 = 0, float ea = 0,
+            float pc2 = 0, float tf = 0, float pa = 0, float eb = 0)
+            : codigo(codigo), nombres(nombres), apellidos(apellidos),
+            pc1(pc1), tp1(tp1), ea(ea), pc2(pc2), tf(tf), pa(pa), eb(eb) {}
+    float getPromedio() {
+        return 0.1*pc1 +0.1*tp1 +0.15*ea +0.10*pc2 +0.35*tf +0.05*pa +0.15*eb;
+    }
+    string toString() {
+        stringstream ss;
+        ss << nombres << " " << apellidos << ": " << getPromedio();
+        return ss.str();
+    }
+};
+
+class GestorAlumnos {
+    vector<Alumno*> alumnos;
+public:
+    ~GestorAlumnos() {
+        for (int i = 0; i < alumnos.size(); ++i) {
+            delete alumnos[i];
+        }
+    }
+    void leerDatos() {
+        ifstream datos("alumnos.csv");
+        string cod;
+        string nom;
+        string ap;
+        float pc1, tp1, ea, pc2, tf, pa, eb;
+        string linea, num;
+
+        while (getline(datos, linea)) {
+            stringstream ss(linea);
+            getline(ss, cod, ',');
+            getline(ss, ap, ',');
+            getline(ss, nom, ',');
+            getline(ss, num, ','); pc1 = atof(num.c_str());
+            getline(ss, num, ','); tp1 = atof(num.c_str());
+            getline(ss, num, ','); ea = atof(num.c_str());
+            getline(ss, num, ','); pc2 = atof(num.c_str());
+            getline(ss, num, ','); tf = atof(num.c_str());
+            getline(ss, num, ','); pa = atof(num.c_str());
+            getline(ss, num); eb = atof(num.c_str());
+            alumnos.push_back(new Alumno(
+                                    cod, ap, nom, pc1,
+                                    tp1, ea, pc2, tf,
+                                    pa, eb));
+        }
+    }
+    void mostrarInfoAlumnos() {
+        for (int i = 0; i < alumnos.size(); ++i) {
+            cout << alumnos[i]->toString() << endl;
+        }
+    }
+};
+
+int main() {
+    GestorAlumnos* ga = new GestorAlumnos();
+
+    ga->leerDatos();
+    ga->mostrarInfoAlumnos();
+
+    delete ga;
+    return 0;
+}
