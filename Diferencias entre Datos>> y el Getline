@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+using namespace std;
+
+int main()
+{
+
+    ifstream datos("123.txt");
+    string str1, str2;
+    int a, b, c;
+    float x;
+
+
+   datos>>str1; //leer una palabra
+   datos.get();
+   getline(datos,str2); //leer una linea completa
+   datos >>a>>b>>c; //se puede varias variables     
+      datos>>x; //tipo son convertidos automaticamente
+
+   cout<<str1<<endl;
+   cout<<str2<<endl;
+   cout<< a<<","<<b<<","<<c<<endl;
+    cout <<x;
+
+
+//el destructor de ifstream cierra el archivo
+
+
+    return 0;
+}
