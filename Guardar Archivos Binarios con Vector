@@ -1,0 +1,76 @@
+#include <iostream>
+#include  <fstream>
+#include  <sstream>
+#include   <string>
+#include   <vector>
+
+#include   <string.h>
+
+using namespace std;
+
+struct Contacto {
+    char nombre[100];
+    char apellido[100];
+    char email[60];
+    char numcel[12];
+};
+
+Contacto crearContacto(string nombre = "",
+                        string apellido = "",
+                        string email = "",
+                        string numcel = "") {
+    Contacto con;
+    strncpy(con.nombre, nombre.c_str(), 99);
+    strncpy(con.apellido, apellido.c_str(), 99);
+    strncpy(con.email, email.c_str(), 59);
+    strncpy(con.numcel, numcel.c_str(), 11);
+    return con;
+}
+
+class GestorContactos {
+    Contacto contactos[100];
+    int numContactos;
+public:
+    GestorContactos() {
+        numContactos = 0;
+    }
+    void agregarContacto(string nombre = "",
+                        string apellido = "",
+                        string email = "",
+                        string numcel = "") {
+        contactos[numContactos++] = crearContacto(nombre,
+                                                 apellido,
+                                                 email,
+                                                 numcel);
+    }
+    void guardarContactos() {
+        ofstream arch("contactos.xyz");
+        if (!arch.is_open()) return; // TODO manejo de errores
+        arch.write((const char*)contactos, sizeof(Contacto) * numContactos);
+    }
+};
+
+int main() {
+    GestorContactos* gc = new GestorContactos();
+    
+    string nom, ape, ema, cel;
+    
+    do {
+        cout << "Ingrese el nombre (vacio para terminar): ";
+        getline(cin, nom);
+        if (nom == "") break;
+        cout << "Ingrese el apellido: ";
+        getline(cin, ape);
+        cout << "Ingrese el email: ";
+        getline(cin, ema);
+        cout << "Ingrese el número de celular: ";
+        getline(cin, cel);
+        gc->agregarContacto(nom, ape, ema, cel);
+    } while (nom != "");
+    cout << "Gracias por usar Skynet\n";
+    gc->guardarContactos();
+    
+    delete gc;
+    
+    return 0;
+}
