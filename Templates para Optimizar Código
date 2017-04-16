@@ -1,0 +1,34 @@
+#include <iostream>
+
+using namespace std;
+double maximo;
+
+template<typename L>
+L mayor(L a)
+{   maximo= (a>maximo ? a : maximo);
+    return maximo;
+}
+int main()
+{
+
+int numerofinal;
+
+int tamano;
+cout<<"Ingrese el tamano de tu arreglo de 1-9: ";
+cin>> tamano;
+int *arreglo = new int[tamano];
+
+for (int i=0; i<tamano ;i++)
+    {   cout<<"\n"<< "Ingresa tu numero en la posicion #"<<i<<": ";
+        cin>>arreglo[i];
+    }
+
+for(int i=0; i<tamano;i++)
+    numerofinal=mayor(arreglo[i]);
+
+    
+    cout <<"El numero de mayor tamano es: "<<numerofinal;
+
+   delete[] arreglo;
+
+}
