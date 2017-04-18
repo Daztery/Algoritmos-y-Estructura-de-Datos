@@ -1,0 +1,141 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <stdlib.h>
+#include <vector>
+
+
+using namespace std;
+struct Libro{
+	int isbn;
+	string titulo;
+	string autor;
+	string genero;
+	public:
+		Libro(int isbn=0,string titulo="",string autor="",string genero=""):isbn(isbn),titulo(titulo),autor(autor),genero(genero){}
+		string Convertir(){
+			stringstream ss;
+			ss<<isbn<<", "<<titulo<<", "<<autor<<", "<<genero<<endl;
+			return ss.str();
+		}
+};
+
+class GestorLibros{
+	private:
+		vector <Libro*> libros;
+	public:
+		int duplicado(int isbn){
+			for(int i=0;i<libros.size();i++){
+				if(libros[i]->isbn==isbn){
+					return i;
+				}
+			}
+			return -1;
+		}
+		bool registrar(Libro* l){
+			if(duplicado(l->isbn)!=-1){
+				return false;
+			}
+			else{
+				libros.push_back(l);
+			}
+		}
+		bool eliminar(int isbn){
+			int pos=duplicado(isbn);
+			if(pos!=-1){
+				libros.erase(libros.begin()+pos);
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		void listar(){
+			for(int i=0;i<libros.size();i++){
+				cout<<"ISBN: "<<libros[i]->isbn<<endl;
+				cout<<"Titulo: "<<libros[i]->titulo<<endl;
+				cout<<"Autor: "<<libros[i]->autor<<endl;
+				cout<<"Genero: "<<libros[i]->genero<<endl;
+				cout<<"----------------------------------------------"<<endl;	
+			}
+		}
+		bool modificar(int isbn,string t, string a, string g){
+			for(int i=0;i<libros.size();i++){
+				if(libros[i]->isbn==isbn){
+					libros[i]->titulo=t;
+					libros[i]->autor=a;
+					libros[i]->genero=g;
+				}
+			}
+		}
+		Libro* buscar(string autor){
+			for(int i=0;i<libros.size();i++){
+				if(libros[i]->autor==autor){
+					return libros[i];
+				}
+			}
+			return NULL;
+		}
+		
+		void leerArchivo(){
+			ifstream Datos("asd.txt");
+			int isbn;
+			string t,a,g,temp;
+			if(!Datos.is_open())return;
+			while(getline(Datos,temp,',')){
+				isbn= atoi(temp.c_str());
+				getline(Datos,t,',');
+				getline(Datos,a,',');
+				getline(Datos,g,',');
+				libros.push_back(new Libro(isbn,t,a,g));
+			}
+			Datos.close();
+			
+		}
+		void escribirArchivo(){
+			ofstream Datos("asd.txt");
+			for(int i=0;i<libros.size();i++){
+				Datos<<libros[i]->Convertir();
+			}
+		}
+		void cerrar(){
+			ofstream Datos("asd.txt");
+			for(int i=0;i<libros.size();i++){
+				Datos<<"";
+			}
+		}
+};
+
+
+
+int main(){
+	
+	GestorLibros *o=new GestorLibros();
+	
+	
+	o->cerrar();
+	o->leerArchivo();
+	o->listar();
+	o->registrar(new Libro(1,"El arte de viajar en combi","Pedro Shiguihara","ficcion"));
+	o->registrar(new Libro(123,"Introduction to Algorithms","Cormen","Programacion"));
+	o->registrar(new Libro(41324,"A song of ice and fire","George R R Martin","ficcion"));
+	o->registrar(new Libro(41324,"A song of ice and fire","George R R Martin","ficcion"));
+	o->listar();
+	o->eliminar(123);
+	cout<<"\n**********Se elimina el isbn 123*********"<<endl;
+	o->listar();
+	
+	o->registrar(new Libro(123,"Introduction to Algorithms","Cormen","Programacion"));
+	o->modificar(123,"asd","pol","andr");
+	
+	Libro *n= o->buscar("Pedro Shiguihara");
+	cout<<n->titulo<<endl;
+	
+	o->escribirArchivo();
+	
+	delete n;
+	delete o;
+	o=NULL;
+	return 0;
+}
