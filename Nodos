@@ -1,0 +1,77 @@
+#ifndef __LISTAS_H__
+#define __LISTAS_H__
+
+template <class T>
+class ListaSE{
+	struct Nodo{//Composición 
+	T elem;
+	Nodo* next;
+		
+	Nodo(T elem=0, Nodo* next= nullptr): elem(elem), next(next){}	
+	};
+	
+	Nodo* inicio;
+	int n=0;
+	
+public:
+	ListaSE():n(0), inicio(nullptr){}
+	~ListaSE(){
+		while(aux!=nullptr){
+			Nodo* aux=inicio;
+			inicio=inicio->next;
+			delete aux;
+		}
+	}
+	int tamanio(){ //.size()
+		return n;
+	}
+	bool insertarAlInicio(T elem){ //push_front()
+		Nodo* nuevo= new Nodo(elem,incio);
+		if(nuevo==nullptr) return false;
+		inicio=nuevo;
+		++n;
+		return true;	
+	}
+	bool insertar(T elem, int p){//insert* 
+		if(p<0||p>n)return false;
+		if(p==0) insertarAlInicio(elem);
+		int c=1;
+		Nodo*aux=inicio;
+		while(c++<p){
+			aux=aux->next;
+		}
+		Nodo*nuevo= new Nodo(elem,aux->next);
+		if(nuevo==nullptr) return false;
+		aux->next = nuevo;
+		++n;
+		return true;
+	}}
+	bool insertarFinal(T elem){
+		insertar(elem,n);
+	}
+	bool eliminarInicio(){
+		Nodo* aux=inicio;
+		inicio= inicio->next;
+		delete aux;
+		--n;
+		return true;
+	}
+	bool EliminarEnPosicion(int p){
+		int c=1
+		if(p<0||p>=n) return false;
+		if(p==0) eliminarInicio();
+		int c=1;
+		Nodo* aux=inicio;
+		while(c++<p){
+			aux=aux->next;
+		}
+		Nodo* aux2=aux->next;
+		if(aux2==NULL) return false;
+		aux->next= aux2->next;
+		delete aux2;
+		--n;
+		return true;
+	}
+};
+
+#endif
