@@ -1,0 +1,118 @@
+#include "Caracter.h"
+#include "iostream"
+
+CCaracter::CCaracter()
+{
+	this->N = new int;
+	*N = 0;
+	this->vector = new char [*N];
+}
+
+
+CCaracter::~CCaracter()
+{
+}
+
+int CCaracter::getN(){ return *N; }
+char *CCaracter::getVector(){ return vector; }
+
+void CCaracter::Agregar(char *letra)
+{
+	char *Aux = new char[*N + 1];
+
+	if (*letra == 'x' || *letra == 'X')
+	{
+		Aux[0] = *letra;
+
+		for (int i = 0; i < *N; i++)
+		{
+			Aux[i + 1] = vector[i];
+		}
+	}
+	else
+	{
+		for (int i = 0; i < *N; i++)
+		{
+			Aux[i] = vector[i];
+		}
+		Aux[*N] = *letra;
+	}
+
+	delete vector;
+	vector = Aux;
+	*N += 1;
+}
+void CCaracter::Eliminar(int pos)
+{
+	char*Aux = new char[*N - 1];
+
+	for (int i = 0; i < pos; i++)
+	{
+		Aux[i] = vector[i];
+	}
+
+	for (int i = pos; i < *N - 1; i++)
+	{
+		Aux[i] = vector[i + 1];
+	}
+
+	delete vector;	
+	vector = Aux;
+	*N -= 1;
+}
+void CCaracter::OrdAsc()
+{
+	int temp = 0;
+
+	for (int i = 0; i < *N; i++)
+	{
+		for (int k = i + 1; k < *N; k++)
+		{
+			if (vector[i] > vector[k])
+			{
+				temp = vector[i];
+				vector[i] = vector[k];
+				vector[k] = temp;
+			}
+		}
+	}
+}
+void CCaracter::OrdDes()
+{
+	int temp = 0;
+
+	for (int i = 0; i < *N; i++)
+	{
+		for (int k = i + 1; k < *N; k++)
+		{
+			if (vector[i] < vector[k])
+			{
+				temp = vector[i];
+				vector[i] = vector[k];
+				vector[k] = temp;
+			}
+		}
+	}
+}
+void CCaracter::Mayusculas()
+{
+	for (int i = 0; i < *N; i++)
+	{
+		if (vector[i] >= 97 && vector[i] <= 122)
+		{
+			vector[i] -= 32;
+		}
+	}
+}
+void CCaracter::Eliminar_Vocal()
+{
+	for (int i = 0; i < *N; i++)
+	{
+		if (toupper(vector[i]) == 'A' || toupper(vector[i]) == 'E' || toupper(vector[i]) == 'I' ||
+			toupper(vector[i]) == 'O' || toupper(vector[i]) == 'U')
+		{
+			Eliminar(i);
+			i--;
+		}
+	}
+}
