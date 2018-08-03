@@ -1,6 +1,6 @@
 <div style="text-align: center;">
   
-  # Algoritmos y Estructura-de-Datos
+  ## Algoritmos y Estructura de Datos
   
 </div>
 
